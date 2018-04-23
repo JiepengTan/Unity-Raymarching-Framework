@@ -90,4 +90,4 @@ More examples:
 
   [1]: https://github.com/JiepengTan/FishManShaderTutorial
   [2]: https://www.shadertoy.com/user/FishMan
-  [3]: https://jiepengtan.github.io/
+  [3]: https://blog.csdn.net/tjw02241035621611
