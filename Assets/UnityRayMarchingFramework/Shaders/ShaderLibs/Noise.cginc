@@ -10,7 +10,9 @@ sampler2D _NoiseTex;
 	#define Noise PNoise
 #elif defined(USING_VALUE_NOISE) 
 	#define Noise VNoise
-	#undefine USING_TEXLOD_NOISE
+    #if defined (USING_TEXLOD_NOISE)
+    #undef USING_TEXLOD_NOISE
+    #endif
 #elif defined(USING_SIMPLEX_NOISE) 
 	#define Noise SNoise
 #elif defined(USING_VNOISE) 
@@ -52,7 +54,21 @@ float PNoise( in float3 p )
 }
 
 
-
+//float3 Noised( in float2 x )
+//{
+//    float2 f = frac(x);
+//    float2 u = f*f*(3.0-2.0*f);
+//
+//    // tex2D version    
+//    float2 p = floor(x);
+//    float a = tex2Dlod( _NoiseTex,float4( (p+float2(0.5,0.5))/256.0, 0.0 ,0.0)).x;
+//    float b = tex2Dlod( _NoiseTex,float4( (p+float2(1.5,0.5))/256.0, 0.0 ,0.0)).x;
+//    float c = tex2Dlod( _NoiseTex,float4( (p+float2(0.5,1.5))/256.0, 0.0 ,0.0)).x;
+//    float d = tex2Dlod( _NoiseTex,float4( (p+float2(1.5,1.5))/256.0, 0.0 ,0.0)).x;
+//    
+//    return float3(a+(b-a)*u.x+(c-a)*u.y+(a-b-c+d)*u.x*u.y,
+//                6.0*f*(1.0-f)*(float2(b-a,c-a)+(a-b-c+d)*u.yx));
+//}
 // 带导数的Noise的推导请参考Milo的 https://stackoverflow.com/questions/4297024/3d-perlin-Noise-analytical-derivative
 float3 Noised( in float2 p )
 {
@@ -159,8 +175,8 @@ float VNoise(float2 p)
     
     float2 w = pf * pf * (3.0 - 2.0 * pf);
     
-    return lerp(lerp(Hash21(pi + float2(0.0, 0.0)), Hash21(pi + float2(1.0, 0.0)), w.x),
-               lerp(Hash21(pi + float2(0.0, 1.0)), Hash21(pi + float2(1.0, 1.0)), w.x),
+    return lerp(lerp(Hash12(pi + float2(0.0, 0.0)), Hash12(pi + float2(1.0, 0.0)), w.x),
+               lerp(Hash12(pi + float2(0.0, 1.0)), Hash12(pi + float2(1.0, 1.0)), w.x),
                w.y);
 }
 
@@ -174,12 +190,12 @@ float VNoise(float3 p)
     
     return  lerp(
                 lerp(
-                    lerp(Hash31(pi + float3(0, 0, 0)), Hash31(pi + float3(1, 0, 0)), w.x),
-                    lerp(Hash31(pi + float3(0, 0, 1)), Hash31(pi + float3(1, 0, 1)), w.x), 
+                    lerp(Hash13(pi + float3(0, 0, 0)), Hash13(pi + float3(1, 0, 0)), w.x),
+                    lerp(Hash13(pi + float3(0, 0, 1)), Hash13(pi + float3(1, 0, 1)), w.x), 
                     w.z),
                 lerp(
-                    lerp(Hash31(pi + float3(0, 1, 0)), Hash31(pi + float3(1, 1, 0)), w.x),
-                    lerp(Hash31(pi + float3(0, 1, 1)), Hash31(pi + float3(1, 1, 1)), w.x), 
+                    lerp(Hash13(pi + float3(0, 1, 0)), Hash13(pi + float3(1, 1, 0)), w.x),
+                    lerp(Hash13(pi + float3(0, 1, 1)), Hash13(pi + float3(1, 1, 1)), w.x), 
                     w.z),
                 w.y);
 }

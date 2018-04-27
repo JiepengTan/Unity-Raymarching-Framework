@@ -25,12 +25,12 @@ Shader "FishManShaderTutorial/SDF" {
 
 
             // implicitly specifies shading rules
-            #define WOOD_MAT 0.
+            #define WOOD_MAT 0.   
             #define STRAW_MAT 1.
-            #define VILLAGE_MAT 2.
-
-            #define BridgeL 40.
-            #define BridgeW 2.
+            #define VILLAGE_MAT 2. 
+ 
+            #define BridgeL 40. 
+            #define BridgeW 2.  
             #define BridgeH 4.
 
             #define BridgeL1 50.
@@ -41,7 +41,7 @@ Shader "FishManShaderTutorial/SDF" {
             #define LegLenGap LegGap * 4.
 
             #define BoardLen  0.2
-
+			 
             float SdCappedCone( in float3 p, in float3 c ) // c=float3(bottom radius, angle , height)
             {
                 float2 q = float2( length(p.xz), p.y );
